@@ -1,0 +1,43 @@
+<body>
+    <i class="fa fa-power-off" aria-hidden="true">
+    <a type="buton" class="btn btn-sm animated-button delete" style="color: #fff;" (click)="logOut()">
+    Logout
+    </a>
+  </i>
+<div style="text-align:center">
+    <h1>Chat-lutation</h1>
+      <h2>Welcome to the Cats DataBase</h2>
+</div>
+<div style="text-align:center">
+  <img src="http://thecatapi.com/api/images/get?format=src&type=gif">
+  <br>
+  <br>
+  <input type="text" [(ngModel)]="title" name="title" placeholder="Title..">
+  <br>
+  <textarea [(ngModel)]="content" name="content" placeholder="Content.."></textarea>
+  <!--faire un getteur des requettes get dans le flux reseaux -->
+  <br>
+  <textarea [(ngModel)]="commentary" name="commentary" placeholder="commentary.."></textarea>
+  <br>
+  <input type="submit" value="Add this cat" (click)="addPost()">
+</div>
+<hr>
+<div>
+  <h1> Cats stored :</h1>
+    <div style="text-align:center">
+      <ul *ngFor="let post of posts | async" style="background: rgb(44, 44, 44);">
+        <li (click)="getPost(post.id)">
+          <h2>{{post.data.title}}</h2>
+          <br>
+          <img src={{post.data.content}}>
+          <br>
+          {{post.data.commentary}}
+          <br>
+        </li>
+        <li>
+          <a class="btn btn-sm animated-button delete" (click)="deletePost(post.id)" style="color: #fff;">Delete this cat</a>
+        </li>
+      </ul>
+    </div>
+</div>
+</body>

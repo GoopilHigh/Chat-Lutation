@@ -1,0 +1,65 @@
+<div class="main__body">
+	<h1 align="center">Chat-lutation !</h1>
+	<h2 align="center">Welcome, with this application you can store cats in DataBase.</h2>
+	<div class="container">
+
+		<div class="login__page">
+			<div class="row">
+
+				<div class="card col-md-4 col-md-offset-4">
+					<div class="login__card">
+						<div class="card-block">
+
+							<form>
+								<!--Auth-->
+								<h3 align="center">Login</h3>
+
+								<!--Auth by Email-->
+								<div class="form-group">
+									<label for="InputEmail">Email address</label>
+									<input type="email" class="form-control" id="InputEmail" placeholder="Email">
+								</div>
+								<div class="form-group">
+									<label for="InputPassword">Password</label>
+									<input type="password" class="form-control" id="InputPassword" placeholder="Password">
+								</div>
+
+								<div class="form-group">
+									<button type="buton" class="btn btn-primary btn-block" style="margin-bottom: 20px" (click)="signInWithEmail()">
+										Login with Email
+									</button>
+								</div>
+
+								<!--Auth by Provider-->
+								<div class="form-group">
+									<!--button type="buton" class="btn btn-block" (click)="signInWithFacebook()">
+										<i class="fa fa-facebook" aria-hidden="true"></i> 
+										Login with Facebook
+									</button>
+
+									<button type="button" class="btn btn-block" (click)="signInWithTwitter()">
+										<i class="fa fa-twitter" aria-hidden="true"></i>
+										Login with Twitter
+									</button>
+
+									<button type="button" class="btn btn-block blacky" (click)="signInWithGithub()">
+										<i class="fa fa-google" aria-hidden="true"></i>
+										Login with Github
+									</button-->
+
+									<button type="button" class="btn btn-block blacky" (click)="signInWithGoogle()">
+										<i class="fa fa-google" aria-hidden="true"></i>
+										Login with Google
+									</button>
+								</div>
+							</form>
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div> 
