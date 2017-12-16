@@ -8,8 +8,8 @@
     <h1>Chat-lutation</h1>
       <h2>Welcome to the Cats DataBase</h2>
 </div>
-<div style="text-align:center">
-  <img src="http://thecatapi.com/api/images/get?format=src&type=gif">
+<div style="text-align:center" ng-controller="ReturnCat">
+  <img ng-model="MainCat" src="http://thecatapi.com/api/images/get?format=src&type=gif">
   <br>
   <br>
   <input type="text" [(ngModel)]="title" name="title" placeholder="Title..">
@@ -41,3 +41,11 @@
     </div>
 </div>
 </body>
+
+<script>
+  var app = angular.module('Chat-Lutation', []);
+  app.controller('ReturnCat', function($scope) {
+    //"http://thecatapi.com/api/images/get?format=src&type=gif"
+    //$scope.MainCat = ;
+  });
+</script>

@@ -1,64 +1,118 @@
 import { Injectable } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
-import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+
 import { Observable } from 'rxjs/Observable';
+import { switchMap } from 'rxjs/operators';
+
+interface User {
+  uid: string;
+  email?: string | null;
+  photoURL?: string;
+  displayName?: string;
+}
 
 @Injectable()
 export class AuthService {
-  private user: Observable<firebase.User>;
-  private userDetails: firebase.User = null;
 
-  constructor(private _firebaseAuth: AngularFireAuth, private router: Router) { 
-      this.user = _firebaseAuth.authState;
+  user: Observable<User | null>;
 
-      this.user.subscribe(
-        (user) => {
-          if (user) {
-            this.userDetails = user;
-            console.log(this.userDetails);
-          }
-          else {
-            this.userDetails = null;
-          }
+  constructor(private afAuth: AngularFireAuth,
+              private afs: AngularFirestore,
+              private router: Router) {
+
+    this.user = this.afAuth.authState
+      .switchMap((user) => {
+        if (user) {
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+        } else {
+          return Observable.of(null);
         }
-      );
-  }
-/*
-  signInWithTwitter() {
-    return this._firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.TwitterAuthProvider()
-    )
-  }
-  signInWithFacebook() {
-    return this._firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.FacebookAuthProvider()
-    )
-  }
-  signInWithGithub() {
-    return this._firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.GithubAuthProvider()
-    )
-  }
-*/
-
-  signInWithGoogle() {
-    return this._firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    )
+      });
   }
 
-  isLoggedIn() {
-  if (this.userDetails == null ) {
-      return false;
-    } else {
-      return true;
-    }
+  ////// OAuth Methods /////
+  googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return this.oAuthLogin(provider);
+  }
+
+  githubLogin() {
+    const provider = new firebase.auth.GithubAuthProvider();
+    return this.oAuthLogin(provider);
+  }
+
+  facebookLogin() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    return this.oAuthLogin(provider);
+  }
+
+  twitterLogin() {
+    const provider = new firebase.auth.TwitterAuthProvider();
+    return this.oAuthLogin(provider);
+  }
+
+  private oAuthLogin(provider: firebase.auth.AuthProvider) {
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then((credential) => {
+        return this.updateUserData(credential.user);
+      })
+  }
+
+  //// Anonymous Auth ////
+  anonymousLogin() {
+    return this.afAuth.auth.signInAnonymously()
+      .then((user) => {
+        return this.updateUserData(user); // if using firestore
+      })
+      .catch((error) => {
+        console.error(error.code);
+        console.error(error.message);
+      });
+  }
+
+  //// Email/Password Auth ////
+  emailSignUp(email: string, password: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        return this.updateUserData(user); // if using firestore
+      })
+  }
+
+  emailLogin(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        return this.updateUserData(user); // if using firestore
+      })
+  }
+
+  // Sends email allowing user to reset password
+  resetPassword(email: string) {
+    const fbAuth = firebase.auth();
+
+    return fbAuth.sendPasswordResetEmail(email)
   }
 
   logout() {
-    this._firebaseAuth.auth.signOut()
-    .then((res) => this.router.navigate(['/']));
+    this.afAuth.auth.signOut().then(() => {
+        this.router.navigate(['/']);
+    });
+  }
+
+  // Sets user data to firestore after succesful login
+  private updateUserData(user: User) {
+
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+
+    const data: User = {
+      uid: user.uid,
+      email: user.email || null,
+      displayName: user.displayName || 'nameless user',
+      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+    };
+    return userRef.set(data);
   }
 }

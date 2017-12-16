@@ -17,15 +17,15 @@
 								<!--Auth by Email-->
 								<div class="form-group">
 									<label for="InputEmail">Email address</label>
-									<input type="email" class="form-control" id="InputEmail" placeholder="Email">
+									<input [value]="email" type="email" class="form-control" id="InputEmail" placeholder="Email" (input)="email = $event.target.value">
 								</div>
 								<div class="form-group">
 									<label for="InputPassword">Password</label>
-									<input type="password" class="form-control" id="InputPassword" placeholder="Password">
+									<input [value]="password" type="password" class="form-control" id="InputPassword" placeholder="Password" (input)="password = $event.target.value">
 								</div>
 
 								<div class="form-group">
-									<button type="buton" class="btn btn-primary btn-block" style="margin-bottom: 20px" (click)="signInWithEmail()">
+									<button type="buton" class="btn btn-primary btn-block" style="margin-bottom: 20px" (click)="signInWithEmail(email, password)">
 										Login with Email
 									</button>
 								</div>
@@ -62,4 +62,21 @@
 		</div>
 
 	</div>
-</div> 
+</div>
+
+<script>
+angular.module('formExample', [])
+.controller('ScripLogin', ['$scope', function($scope) {
+	$scope.master = {};
+
+	$scope.update = function(user) {
+	$scope.master = angular.copy(user);
+	};
+
+	$scope.reset = function() {
+	$scope.user = angular.copy($scope.master);
+	};
+
+	$scope.reset();
+}]);
+</script>

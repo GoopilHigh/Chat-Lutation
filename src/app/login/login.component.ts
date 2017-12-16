@@ -39,9 +39,17 @@ Make they App by Providers
       .catch((err) => console.log(err));
     }
 */
+    signInWithEmail(email: string, password: string) {
+      this.authService.emailSignUp(email, password)
+      .then((res) => { 
+          this.router.navigate(['Chat-Lutation'])
+        })
+      .catch((err) => console.log(err));
+    }
+
 
     signInWithGoogle() {
-      this.authService.signInWithGoogle()
+      this.authService.googleLogin()
       .then((res) => { 
           this.router.navigate(['Chat-Lutation'])
         })
