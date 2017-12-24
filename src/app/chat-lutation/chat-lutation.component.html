@@ -8,14 +8,11 @@
     <h1>Chat-lutation</h1>
       <h2>Welcome to the Cats DataBase</h2>
 </div>
-<div style="text-align:center" ng-controller="ReturnCat">
-  <img ng-model="MainCat" src="http://thecatapi.com/api/images/get?format=src&type=gif">
+<div id="main-holder" style="text-align:center" ng-controller="ReturnCat">
+  <img ng-model="MainCat" id="cat-holder" src="">
   <br>
   <br>
   <input type="text" [(ngModel)]="title" name="title" placeholder="Title..">
-  <br>
-  <textarea [(ngModel)]="content" name="content" placeholder="Content.."></textarea>
-  <!--faire un getteur des requettes get dans le flux reseaux -->
   <br>
   <textarea [(ngModel)]="commentary" name="commentary" placeholder="commentary.."></textarea>
   <br>
@@ -43,9 +40,5 @@
 </body>
 
 <script>
-  var app = angular.module('Chat-Lutation', []);
-  app.controller('ReturnCat', function($scope) {
-    //"http://thecatapi.com/api/images/get?format=src&type=gif"
-    //$scope.MainCat = ;
-  });
+  // http://thecatapi.com/api/images/get?format=src&type=gif
 </script>

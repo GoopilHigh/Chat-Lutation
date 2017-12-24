@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { AuthService } from '../services/auth.service';
+declare var $: any;
 
 interface Post {
   title: string;
@@ -44,8 +45,29 @@ export class ChatLutationComponent {
     });
   }
 
+  ngAfterViewInit() {
+    
+    $.ajaxPrefilter( function (options) {
+      if (options.crossDomain && jQuery.support.cors) {
+        var http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
+        options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
+      }
+    });
+
+    $.ajax({
+      type: 'HEAD',
+      url: 'http://thecatapi.com/api/images/get?format=src&type=gif',
+      success: function(data, textStatus, request){
+        document.getElementById("cat-holder").src = request.getResponseHeader('X-Final-Url');
+      },
+      error: function (request, textStatus, errorThrown) {
+        console.log("error while retrieving image");
+      }
+    });
+  }
+
   addPost() {
-    this.afs.collection('posts').add({'title': this.title, 'content': this.content, 'commentary': this.commentary});
+    this.afs.collection('posts').add({'title': this.title, 'content': document.getElementById("cat-holder").src, 'commentary': this.commentary});
   }
 
   getPost(postId) {
