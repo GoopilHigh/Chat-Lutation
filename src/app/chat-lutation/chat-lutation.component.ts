@@ -3,7 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { AuthService } from '../services/auth.service';
-declare var $: any;
+import * as $ from 'jquery';
+
 
 interface Post {
   title: string;
