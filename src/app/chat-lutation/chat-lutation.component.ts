@@ -5,7 +5,6 @@ import 'rxjs/add/operator/map';
 import { AuthService } from '../services/auth.service';
 import * as $ from 'jquery';
 
-
 interface Post {
   title: string;
   content: string;
@@ -59,7 +58,7 @@ export class ChatLutationComponent {
       type: 'HEAD',
       url: 'http://thecatapi.com/api/images/get?format=src&type=gif',
       success: function(data, textStatus, request){
-        document.getElementById("cat-holder").src = request.getResponseHeader('X-Final-Url');
+        (<HTMLImageElement>document.getElementById("cat-holder")).src = request.getResponseHeader('X-Final-Url');
       },
       error: function (request, textStatus, errorThrown) {
         console.log("error while retrieving image");
@@ -68,7 +67,7 @@ export class ChatLutationComponent {
   }
 
   addPost() {
-    this.afs.collection('posts').add({'title': this.title, 'content': document.getElementById("cat-holder").src, 'commentary': this.commentary});
+    this.afs.collection('posts').add({'title': this.title, 'content': (<HTMLImageElement>document.getElementById("cat-holder")).src, 'commentary': this.commentary});
   }
 
   getPost(postId) {
