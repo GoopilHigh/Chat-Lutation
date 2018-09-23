@@ -1,5 +1,7 @@
 # ChatLutation
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8be700fea2954c20be6a55e46c08f6d1)](https://app.codacy.com/app/GoopilHigh/Chat-Lutation-WebApplication?utm_source=github.com&utm_medium=referral&utm_content=Osd2/Chat-Lutation-WebApplication&utm_campaign=Badge_Grade_Dashboard)
+
 With this application you can store cats Gif in FireBase.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
